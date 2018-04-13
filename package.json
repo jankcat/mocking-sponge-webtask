@@ -9,6 +9,6 @@
   "author": "Tim Watkins",
   "license": "MIT",
   "dependencies": {
-    "imgflipper": "^1.0.1"
+    "request": "^2.85.0"
   }
 }

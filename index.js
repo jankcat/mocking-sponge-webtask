@@ -1,6 +1,5 @@
 "use strict";
-
-const Imgflipper = require("imgflipper");
+const request = require("request");
 
 module.exports = function (context, callback) {
 	// Retrieve and prepare the user's message
@@ -10,18 +9,46 @@ module.exports = function (context, callback) {
 	// ImgFlip API setup
 	const imgFlipUsername = context.secrets.imgFlipUsername || "";
 	const imgFlipPassword = context.secrets.imgFlipPassword || "";
-	const imgflipper = new Imgflipper(imgFlipUsername, imgFlipPassword);
-	
+
 	// Generate the meme
-	imgflipper.generateMeme(102156234, "", spongifiedString, function (err, url) {
-		if (err) {
+	getImage(imgFlipUsername, imgFlipPassword, spongifiedString, function (err, body) {
+		if (body) {
+			callback(null, body);
+		} else if (err) {
 			callback(null, err);
-		} else if (url) {
-			callback(null, url);
 		} else {
 			callback(null, "OOPSIE WOOPSIE!! Uwu We made a fucky wucky!!");
 		}
 	});
+}
+
+function getImage(username, password, message, callback) {
+	// Prepare request
+	const data = {
+		template_id: 102156234,
+		username,
+		password,
+		text0: "",
+		text1: message,
+	};
+	// Send request to API
+	request.post(
+		{
+			url: "https://api.imgflip.com/caption_image",
+			form: data,
+		},
+		function (err, httpResponse, body) {
+			if (err) return callback(err);
+			var bodyObj = {};
+			try {
+				bodyObj = JSON.parse(body);
+			} catch (e) {
+				return callback(e);
+			}
+			if (!bodyObj.success) return callback(bodyObj.error_message);
+			callback(null, bodyObj.data.url);
+		}
+	);
 }
 
 function spongify(message) {
