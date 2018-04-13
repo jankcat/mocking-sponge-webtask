@@ -15,7 +15,7 @@ module.exports = function (context, callback) {
 		if (body) {
 			callback(null, body);
 		} else if (err) {
-			callback(null, err);
+			callback(null, "OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! Here's the deetyweetys: "+ err);
 		} else {
 			callback(null, "OOPSIE WOOPSIE!! Uwu We made a fucky wucky!!");
 		}
@@ -28,9 +28,16 @@ function getImage(username, password, message, callback) {
 		template_id: 102156234,
 		username,
 		password,
-		text0: "",
-		text1: message,
+		boxes: [
+			{
+				text: "", // Top Text Box Empty
+			},
+			{
+				text: message,
+			},
+		],
 	};
+	
 	// Send request to API
 	request.post(
 		{
