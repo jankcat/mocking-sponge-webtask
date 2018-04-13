@@ -9,7 +9,6 @@
   "author": "Tim Watkins",
   "license": "MIT",
   "dependencies": {
-    "imgflipper": "^1.0.1",
-    "spongify": "1.0.0"
+    "imgflipper": "^1.0.1"
   }
 }

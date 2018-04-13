@@ -1,5 +1,6 @@
+"use strict";
+
 const Imgflipper = require("imgflipper");
-const spongify = require('spongify').convert;
 
 module.exports = function (context, callback) {
 	// Retrieve and prepare the user's message
@@ -7,8 +8,8 @@ module.exports = function (context, callback) {
 	const spongifiedString = spongify(message);
 	
 	// ImgFlip API setup
-	const imgFlipUsername = context.secrets.imgFlipUsername | "";
-	const imgFlipPassword = context.secrets.imgFlipPassword | "";
+	const imgFlipUsername = context.secrets.imgFlipUsername || "";
+	const imgFlipPassword = context.secrets.imgFlipPassword || "";
 	const imgflipper = new Imgflipper(imgFlipUsername, imgFlipPassword);
 	
 	// Generate the meme
@@ -21,4 +22,23 @@ module.exports = function (context, callback) {
 			callback(null, "OOPSIE WOOPSIE!! Uwu We made a fucky wucky!!");
 		}
 	});
+}
+
+function spongify(message) {
+    let spongified = "";
+    let upper = true;
+	// only letters, not spaces etc.
+    let regexp = /[a-zA-Z]/;
+	
+	for (let i of message) {
+      if (!upper && i.match(regexp) !== null) {
+        i = i.toLowerCase();
+        upper = true;
+      } else if (i.match(regexp) !== null) {
+        i = i.toUpperCase();
+        upper = false;
+      }
+      spongified += i;
+    }
+	return spongified;
 }
