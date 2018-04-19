@@ -8,7 +8,7 @@ const app = express();
 
 app.get('*', (req, res) => {
 	// Retrieve and prepare the user's message
-	const message = req.query.message || "You Done Messed Up A-Aron!";
+	const message = req.query.message || "You Done Messed Up, A-Aron!";
 	const spongifiedString = spongify(message);
 	
 	// ImgFlip API setup
